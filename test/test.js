@@ -2,6 +2,7 @@ import test from 'ava';
 import AmazonListScraper from '../dist';
 
 const testListURL = 'https://www.amazon.com/gp/registry/wishlist/1JMCNHNT959X2';
+const testListJPURL = 'https://www.amazon.co.jp/gp/registry/wishlist/3772KOSSSKRDB';
 const multiPagesListURL = 'https://www.amazon.com/gp/registry/wishlist/1EL6CUGB5P0ZV';
 
 test('expose a constructor', t => t.is(typeof AmazonListScraper, 'function'));
@@ -28,6 +29,18 @@ test('return list of items with title, price and link', t => (
     t.true(!isNaN(parseFloat(price)));
     t.true(link.startsWith('https://www.amazon.com/dp/B0026OR2ZY'));
     t.is(items[1].title, 'Clean Code: A Handbook of Agile Software Craftsmanship');
+  })
+));
+
+test('return list of items with title, price and link when www.amazon.co.jp', t => (
+  new AmazonListScraper({ baseURL: 'https://www.amazon.co.jp' }).scrape(testListJPURL).then((items) => {
+    t.is(items.length, 21);
+    const { title, price, link } = items[0];
+    // eslint-disable-next-line no-script-url
+    t.is(title, 'クダンノゴトシ（５） (ヤングマガジンコミックス)');
+    t.true(!isNaN(parseFloat(price)));
+    t.true(link.startsWith('https://www.amazon.co.jp/dp/'));
+    t.is(items[1].title, '40歳からは股関節と肩甲骨を鍛​えなさい!');
   })
 ));
 
