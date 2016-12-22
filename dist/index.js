@@ -97,15 +97,16 @@ var AmazonListScraper = function () {
       var price = function price() {
         switch (options.baseURL || 'https://www.amazon.com') {
           case 'https://www.amazon.co.jp':
-            return $(ele).find('.a-color-price').text().trim().split(' ')[1];
+            {
+              return $(ele).find('.a-color-price').text().trim().split(' ')[1].replace(/,/g, '');
+            }
           default:
-            return $(ele).find('.a-color-price').text().trim().split(' ')[0];
+            {
+              var priceInfo = $(ele).find('.a-color-price').text().trim().split(' ')[0];
+              return parseFloat(priceInfo.slice(1));
+            }
         }
       }();
-
-      if (price) {
-        price = parseFloat(price.slice(1));
-      }
 
       if (isNaN(price)) {
         price = INVALID_PRICE;
