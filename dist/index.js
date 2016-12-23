@@ -93,6 +93,7 @@ var AmazonListScraper = function () {
       }
 
       var link = '' + (options.baseURL || 'https://www.amazon.com') + titleNode.attr('href');
+      var itemId = link.split('/')[4];
 
       var price = function price() {
         switch (options.baseURL || 'https://www.amazon.com') {
@@ -112,7 +113,7 @@ var AmazonListScraper = function () {
         price = INVALID_PRICE;
       }
 
-      return { title: title, price: price, link: link };
+      return { title: title, price: price, link: link, itemId: itemId };
     }
   }, {
     key: 'getNextPageUrl',

@@ -35,11 +35,12 @@ test('return list of items with title, price and link', t => (
 test('return list of items with title, price and link when www.amazon.co.jp', t => (
   new AmazonListScraper({ baseURL: 'https://www.amazon.co.jp' }).scrape(testListJPURL).then((items) => {
     t.is(items.length, 21);
-    const { title, price, link } = items[0];
+    const { title, price, link, itemId } = items[0];
     // eslint-disable-next-line no-script-url
     t.is(title, 'クダンノゴトシ（５） (ヤングマガジンコミックス)');
     t.true(!isNaN(parseFloat(price)));
     t.true(link.startsWith('https://www.amazon.co.jp/dp/'));
+    t.true(itemId === 'B01N2O5MAC');
     t.is(items[1].title, '40歳からは股関節と肩甲骨を鍛​えなさい!');
   })
 ));
